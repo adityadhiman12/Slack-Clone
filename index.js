@@ -6,6 +6,7 @@ const loggingMiddleware = require('./middleware/logginMiddleware');
 
 const channelsRoute = require('./routes/channels');
 const messagesRoute = require('./routes/messages');
+const loginRoute = require('./routes/login');
 
 
 const app = express();
@@ -17,10 +18,14 @@ app.set('view engine', 'handlebars');
 
 // loggin Middleware
 app.use(loggingMiddleware);
+
+//
 // channel api routes
 app.use('/api/channels', channelsRoute);
 // message api route
 app.use('/api/messages', messagesRoute);
+// login route
+app.use('/api/login', loginRoute);
 
 
 const PORT = process.env.PORT || 5000;

@@ -2,6 +2,8 @@ const express = require('express');
 
 const router = express.Router();
 const channelController = require('../controllers/channelController');
+const generateToken = require('../middleware/generateToken');
+const jwtVerification = require('../middleware/jwtVerification');
 
 router.use(express.json()); // body parser
 
@@ -10,15 +12,15 @@ router.use(express.json()); // body parser
 router.get('/', channelController.getChannels);
 
 // to add a new channel
-router.post('/', channelController.addChannel);
+router.post('/', generateToken, jwtVerification, channelController.addChannel);
 
 // to get individual channel
-router.get('/:id', channelController.getChannelById);
+router.get('/:id', generateToken, channelController.getChannelById);
 
 // to update a channel by id
-router.put('/:id', channelController.updateChannel);
+router.put('/:id', generateToken, jwtVerification, channelController.updateChannel);
 
 // to delete channel by id
-router.delete('/:id', channelController.deleteChannelById);
+router.delete('/:id', generateToken, jwtVerification, channelController.deleteChannelById);
 
 module.exports = router;
