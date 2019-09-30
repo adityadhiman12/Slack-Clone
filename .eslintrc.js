@@ -15,6 +15,9 @@ module.exports = {
     sourceType: 'module',
   },
   rules: {
-    "no-console":"off"
+    "no-console":"off",
+    "eqeqeq":"off",
+    "no-shadow":"off"
+
   },
 };

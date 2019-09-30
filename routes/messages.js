@@ -1,52 +1,23 @@
 const express = require('express');
 
 const router = express.Router();
-const mysql = require('mysql');
+const messageController = require('../controllers/messageController');
 
-router.use(express.json());
+router.use(express.json()); // body parser
 
-const db = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'Adi@29071998',
-  database: 'chatboxDB',
-});
+// to get all channels
+router.get('/', messageController.getMessages);
 
-db.connect((err) => {
-  if (err) {
-    throw err;
-  } else {
-    console.log('My SQL connected');
-  }
-});
+// to add a new channel
+router.post('/', messageController.addMessage);
 
-// to get all messages
-router.get('/', (req, res) => {
-  const sql = 'SELECT * FROM messages';
+// to get individual channel
+router.get('/:id', messageController.getMessageById);
 
-  db.query(sql, (err, results) => {
-    if (err) throw err;
-    res.json(results);
-  });
-});
+// to update a channel by id
+router.put('/:id', messageController.updateMessage);
 
-// to add a new msg
-router.post('/', (req, res) => {
-  const newMsg = req.body.textMsg;
-  const channelId = req.body.channel_id;
-  const userId = req.body.user_id;
-  const newEvent = {
-
-    channel_id: channelId,
-    user_id: userId,
-    textMsg: newMsg,
-  };
-  newEvent.id = null;
-  // eslint-disable-next-line no-unused-vars
-  db.query('INSERT INTO messages SET ?', newEvent, (err, result) => {
-    if (err) throw err;
-    res.json(newEvent);
-  });
-});
+// to delete channel by id
+router.delete('/:id', messageController.deleteMessageById);
 
 module.exports = router;
