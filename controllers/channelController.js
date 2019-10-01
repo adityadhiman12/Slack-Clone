@@ -39,6 +39,7 @@ async function addChannel(req, res, next) {
       next(err);
     }
   } else {
+    console.log(error);
     next(createError(400, 'input values are wrong....'));
   }
 }

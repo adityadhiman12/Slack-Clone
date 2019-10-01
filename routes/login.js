@@ -1,10 +1,14 @@
 const express = require('express');
-
-const router = express.Router();
 const loginController = require('../controllers/loginController');
 
-router.use(express.json()); // body parser
+const router = express.Router();
 
-router.post('/', loginController);
+router.use(express.json());
+
+router.get('/', (req, res) => {
+  res.send('in login');
+});
+
+router.post('/', loginController.login);
 
 module.exports = router;

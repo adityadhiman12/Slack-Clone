@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const messageController = require('../controllers/messageController');
 const generateToken = require('../middleware/generateToken');
-const jwtVerification = require('../middleware/jwtVerification');
+const jwtVerification = require('../middleware/verifyToken');
 
 router.use(express.json()); // body parser
 

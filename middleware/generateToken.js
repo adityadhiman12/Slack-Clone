@@ -1,19 +1,13 @@
+const accessToken = require('../controllers/loginController');
+
 function verifyToken(req, res, next) {
-  // get header value
-  const bearerHeader = req.headers.authorization;
-  // check if bearer is undefined
-  if (typeof bearerHeader !== 'undefined') {
-    // split at the space
-    const bearer = bearerHeader.split(' ');
-    // get token from array
-    const bearerToken = bearer[1];
-    // set the token
-    req.token = bearerToken;
-    // next middleware
-    // console.log('token genreated moving to next function');
+  const token = accessToken.getToken();
+  if (typeof token !== 'undefined') {
+    req.token = token;
     next();
-  } else {
-    res.sendStatus(403);
+  } else { // if we dont have token then we move into else statement
+    console.log('in else statement');
+    res.redirect('http://localhost:7000/api/login');
   }
 }
 
