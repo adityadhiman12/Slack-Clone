@@ -1,32 +1,42 @@
 const joi = require('joi');
 const bcrypt = require('bcrypt');
 const userValidation = require('../validation/register');
-const queriesOfRegister = require('../queries/registeration');
+const registerQueries = require('../queries/registeration');
 
+function renderPage(req, res) {
+  res.render('register');
+}
 
 async function register(req, res) {
-//   console.log(req.body);
   const user = {
     email: req.body.email,
     password: req.body.password,
   };
   const { error } = joi.validate(user, userValidation);
-  // console.log(error);
+
   const salt = bcrypt.genSaltSync(10);
+  console.log('salt--->', salt);
   const hashedPassword = bcrypt.hashSync(user.password, salt);
+
+
+  console.log('hashedpwd--->', hashedPassword);
   user.password = hashedPassword;
 
   if (error !== null) {
     res.status(400);
-    res.send('registeration failed');
+    res.render('register', { status: 'registeration unsuccessful! Validation is wrong' });
   } else {
     try {
-      await queriesOfRegister(Object.values(user));
-      res.send('registeration completed.....');
+      await registerQueries(Object.values(user));
+      res.render('register', { status: 'registeration successful!' });
     } catch (err) {
       res.status(404);
+      res.render('register', { status: 'registeration unsuccessful! Wrong user name' });
     }
   }
 }
 
-module.exports = register;
+module.exports = {
+  renderPage,
+  register,
+};

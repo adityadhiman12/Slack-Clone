@@ -7,7 +7,7 @@ function verifyToken(req, res, next) {
     next();
   } else { // if we dont have token then we move into else statement
     console.log('in else statement');
-    res.redirect('http://localhost:7000/api/login');
+    res.redirect('/api/login');
   }
 }
 

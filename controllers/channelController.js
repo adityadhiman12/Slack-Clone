@@ -3,12 +3,12 @@ const createError = require('http-errors');
 
 const channelsValidator = require('../validation/channels');
 
-const queriesOfChannels = require('../queries/channels');
+const channelsQueries = require('../queries/channels');
 
 // get all channels   // renderin part left
 async function getChannels(req, res, next) {
   try {
-    const finalResult = await queriesOfChannels.queryGetChannels();
+    const finalResult = await channelsQueries.getChannels();
     if (req.headers['content-type'] === 'application/json') {
       res.send(finalResult);
     }
@@ -27,7 +27,7 @@ async function addChannel(req, res, next) {
   const { error } = joi.validate(newChannel, channelsValidator);
   if (error === null) {
     try {
-      const result = await queriesOfChannels.queryAddChannel(
+      const result = await channelsQueries.addChannel(
         Object.values(newChannel),
       );
       if (result.affectedRows != 0) {
@@ -47,7 +47,7 @@ async function addChannel(req, res, next) {
 // get individual channel //rendering part left
 async function getChannelById(req, res, next) {
   try {
-    const result = await queriesOfChannels.queryGetSingleChannel(req.params.id);
+    const result = await channelsQueries.getSingleChannel(req.params.id);
     if (result.length === 0) {
       next(createError(404, 'no such id exists'));
     } else {
@@ -72,7 +72,7 @@ async function updateChannel(req, res, next) {
 
   if (error === null) {
     try {
-      const finalResult = await queriesOfChannels.queryUpdateChannel(updatedChannelValues);
+      const finalResult = await channelsQueries.updateChannel(updatedChannelValues);
       if (finalResult.affectedRows != 0) {
         res.send(newUpdatedChannel);
       } else {
@@ -89,7 +89,7 @@ async function updateChannel(req, res, next) {
 // delete channel by id
 async function deleteChannelById(req, res, next) {
   try {
-    const finalResult = await queriesOfChannels.queryDeleteChannel(req.params.id);
+    const finalResult = await channelsQueries.deleteChannel(req.params.id);
     if (finalResult.affectedRows != 0) {
       res.send('Deletion successful...');
     } else {

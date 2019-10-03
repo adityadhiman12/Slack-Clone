@@ -2,9 +2,13 @@ const jwt = require('jsonwebtoken');
 const joi = require('joi');
 const bcrypt = require('bcrypt');
 const loginValidator = require('../validation/login');
-const queryOfLogin = require('../queries/login');
+const loginQueries = require('../queries/login');
 
 let Token;
+
+function showLoginPage(req, res) {
+  res.render('login');
+}
 
 async function login(req, res) {
   console.log('------------------->');
@@ -15,12 +19,14 @@ async function login(req, res) {
   const { error } = joi.validate(user, loginValidator);
 
   if (error !== null) {
-    res.status(404).send('login failed...validation issue is there');
+    res.render('login', { status: 'login unsuccessful....check your validation' });
+    res.status(404);
   } else {
     try {
-      const finalResult = await queryOfLogin(user.email);
+      const finalResult = await loginQueries(user.email);
       if (finalResult.length === 0) {
-        res.status(404).send('username not found');
+        res.render('login', { status: 'username not found' });
+        res.status(404);
       } else {
         bcrypt.compare(
           user.password,
@@ -37,9 +43,10 @@ async function login(req, res) {
 
               console.log(token);
               // res.send(token);
-              res.redirect('http://localhost:7000/api/channels');
+              res.redirect('/api/channels');
             } else {
-              res.status(404).send('invalid pwd');
+              res.render('login', { status: 'Wrong password' });
+              res.status(404);
             }
           },
         );
@@ -54,4 +61,4 @@ async function login(req, res) {
 function getToken() {
   return Token;
 }
-module.exports = { login, getToken };
+module.exports = { showLoginPage, login, getToken };

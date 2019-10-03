@@ -1,12 +1,12 @@
 const express = require('express');
 const exphbs = require('express-handlebars');
 const cookieParser = require('cookie-parser');
-const loggingMiddleware = require('./middleware/logginMiddleware');
+const loggingMiddleware = require('./middleware/loggingMiddleware');
 
-const channelsRoute = require('./routes/channels');
-const messagesRoute = require('./routes/messages');
-const loginRoute = require('./routes/login');
-const RegisterRoute = require('./routes/register');
+const channelsRouter = require('./routes/channels');
+const messagesRouter = require('./routes/messages');
+const loginRouter = require('./routes/login');
+const RegisterRouter = require('./routes/register');
 
 
 const app = express();
@@ -17,10 +17,11 @@ app.set('view engine', 'handlebars');
 app.use(express.json());
 app.use(cookieParser());
 app.use(loggingMiddleware);
-app.use('/api/login', loginRoute);
-app.use('/api/register', RegisterRoute);
-app.use('/api/channels', channelsRoute);
-app.use('/api/messages', messagesRoute);
+
+app.use('/api/register', RegisterRouter);
+app.use('/api/login', loginRouter);
+app.use('/api/channels', channelsRouter);
+app.use('/api/messages', messagesRouter);
 
 
 const PORT = process.env.PORT || 7000;

@@ -5,9 +5,7 @@ const router = express.Router();
 
 router.use(express.json());
 
-router.get('/', (req, res) => {
-  res.send('in login');
-});
+router.get('/', loginController.showLoginPage);
 
 router.post('/', loginController.login);
 

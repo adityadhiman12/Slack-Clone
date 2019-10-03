@@ -3,12 +3,12 @@ const createError = require('http-errors');
 
 const messagesValidator = require('../validation/messages');
 
-const queriesOfMessages = require('../queries/messages');
+const messageQueries = require('../queries/messages');
 
 // get all messages   // renderin part left
 async function getMessages(req, res, next) {
   try {
-    const finalResult = await queriesOfMessages.queryGetMessages();
+    const finalResult = await messageQueries.getMessages();
     if (req.headers['content-type'] === 'application/json') {
       res.send(finalResult);
     }
@@ -30,7 +30,7 @@ async function addMessage(req, res, next) {
   console.log(error);
   if (error === null) {
     try {
-      const result = await queriesOfMessages.queryAddMessage(
+      const result = await messageQueries.addMessage(
         Object.values(newMessage),
       );
       if (result.affectedRows != 0) {
@@ -49,7 +49,7 @@ async function addMessage(req, res, next) {
 // get individual channel //rendering part left
 async function getMessageById(req, res, next) {
   try {
-    const result = await queriesOfMessages.queryGetSingleMessage(req.params.id);
+    const result = await messageQueries.getSingleMessage(req.params.id);
     if (result.length === 0) {
       next(createError(404, 'no such id exists'));
     } else {
@@ -75,7 +75,7 @@ async function updateMessage(req, res, next) {
 
   if (error === null) {
     try {
-      const finalResult = await queriesOfMessages.queryUpdateMessage(updatedMessageValues);
+      const finalResult = await messageQueries.updateMessage(updatedMessageValues);
       if (finalResult.affectedRows != 0) {
         res.send(newUpdatedMessage);
       } else {
@@ -92,7 +92,7 @@ async function updateMessage(req, res, next) {
 // delete channel by id
 async function deleteMessageById(req, res, next) {
   try {
-    const finalResult = await queriesOfMessages.queryDeleteMessage(req.params.id);
+    const finalResult = await messageQueries.deleteMessage(req.params.id);
     if (finalResult.affectedRows != 0) {
       res.send('Deletion successful...');
     } else {

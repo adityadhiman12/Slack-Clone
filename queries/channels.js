@@ -1,22 +1,22 @@
 const query = require('../database/queryPromisification');
 
 
-async function queryGetChannels() {
+async function getChannels() {
   const queryResult = await query('SELECT * FROM channels');
   return queryResult;
 }
 
-async function queryAddChannel(inputs) {
+async function addChannel(inputs) {
   const queryResult = await query('INSERT INTO channels(id,name) VALUES(?,?) ', inputs);
   return queryResult;
 }
 
-async function queryGetSingleChannel(input) {
+async function getSingleChannel(input) {
   const queryResult = await query('SELECT * FROM channels where id=?', input);
   return queryResult;
 }
 
-async function queryUpdateChannel(inputs) {
+async function updateChannel(inputs) {
   const queryResult = await query(
     'UPDATE channels SET name=? WHERE id = ? ',
     inputs,
@@ -24,7 +24,7 @@ async function queryUpdateChannel(inputs) {
   return queryResult;
 }
 
-async function queryDeleteChannel(input) {
+async function deleteChannel(input) {
   const queryResult = await query(
     'DELETE from channels where id= ?',
     input,
@@ -34,5 +34,5 @@ async function queryDeleteChannel(input) {
 
 
 module.exports = {
-  queryGetChannels, queryGetSingleChannel, queryAddChannel, queryUpdateChannel, queryDeleteChannel,
+  getChannels, getSingleChannel, addChannel, updateChannel, deleteChannel,
 };
