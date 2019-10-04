@@ -9,9 +9,7 @@ const messageQueries = require('../queries/messages');
 async function getMessages(req, res, next) {
   try {
     const finalResult = await messageQueries.getMessages();
-    if (req.headers['content-type'] === 'application/json') {
-      res.send(finalResult);
-    }
+    res.json(finalResult);
   } catch (err) {
     next(err);
   }

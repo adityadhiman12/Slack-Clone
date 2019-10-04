@@ -13,6 +13,8 @@ async function register(req, res) {
     password: req.body.password,
   };
   const { error } = joi.validate(user, userValidation);
+  console.log('.....->validation error', error);
+
 
   const salt = bcrypt.genSaltSync(10);
   console.log('salt--->', salt);

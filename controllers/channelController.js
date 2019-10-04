@@ -5,13 +5,12 @@ const channelsValidator = require('../validation/channels');
 
 const channelsQueries = require('../queries/channels');
 
+
 // get all channels   // renderin part left
 async function getChannels(req, res, next) {
   try {
     const finalResult = await channelsQueries.getChannels();
-    if (req.headers['content-type'] === 'application/json') {
-      res.send(finalResult);
-    }
+    res.json(finalResult);
   } catch (err) {
     next(err);
   }
@@ -102,6 +101,7 @@ async function deleteChannelById(req, res, next) {
 
 
 module.exports = {
+
   getChannels,
   addChannel,
   getChannelById,
