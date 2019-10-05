@@ -1,5 +1,3 @@
-// const query = require('../database/queryPromisification');
-
 async function fetchChannel() {
   const channels = await fetch('http://localhost:2000/api/channels');
   const channelsData = await channels.json();
@@ -42,9 +40,6 @@ function displayChannelNames(channelNameArray) {
 }
 
 async function showMessages(channelNameArray, messagesArray) {
-  console.log(channelNameArray);
-  console.log('              ');
-  console.log(messagesArray);
   // eslint-disable-next-line no-unused-vars
   let channelId = null;
   const unorderedList = document.querySelector('#channels');
@@ -76,11 +71,30 @@ async function showMessages(channelNameArray, messagesArray) {
   });
 }
 
+function formEventListener() {
+  const addMessages = document.forms[0];
+  // console.log(addMessage);
+  const messageUnorderedList = document.querySelector('#messages');
+  const message = document.querySelector('#message');
+  addMessages.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const inputMessage = addMessages.querySelector('input[type="text"]').value;
+    // console.log(inputMessage);
+    const newMessage = message.cloneNode(true);
+    const messageValue = newMessage.querySelector('p');
+    messageValue.textContent = inputMessage;
+    // console.log(messageValue.textContent);
+    messageUnorderedList.appendChild(messageValue);
+  });
+}
+
+
 fetchChannel().then((channel) => {
   const channelNameArray = toArray(channel);
   displayChannelNames(channelNameArray);
   fetchMessages().then((messages) => {
     const messagesArray = toArray(messages);
     showMessages(channelNameArray, messagesArray);
+    formEventListener();
   });
 });

@@ -19,7 +19,7 @@ const app = express();
 app.engine('html', require('ejs').renderFile);
 
 app.set('view engine', 'html');
- 
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(express.json());
